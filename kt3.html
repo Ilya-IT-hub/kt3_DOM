@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #slider {
+      width: 300px;
+      height: 10px;
+      background-color: #ccc;
+      position: relative;
+      cursor: pointer;
+    }
+
+    #slider #handle {
+      width: 20px;
+      height: 20px;
+      background-color: #333;
+      border-radius: 50%;
+      position: absolute;
+      top: -5px;
+      cursor: pointer;
+    }
+
+    #value {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slider">
+    <div id="handle"></div>
+  </div>
+  <div id="value">0</div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const handle = document.getElementById('handle');
+    const valueDisplay = document.getElementById('value');
+
+    const minValue = 0;
+    const maxValue = 100;
+    let currentValue = 50; 
+
+    function updateValueDisplay() {
+      valueDisplay.textContent = currentValue;
+    }
+
+    function updateSlider(positionX) {
+      const sliderWidth = slider.offsetWidth;
+      const handleWidth = handle.offsetWidth;
+
+      // Вычисляем новое значение
+      const newValue = Math.round((positionX - (handleWidth / 2)) / (sliderWidth - handleWidth) * (maxValue - minValue) + minValue);
+
+      currentValue = Math.min(maxValue, Math.max(minValue, newValue));
+      const handlePosition = (currentValue - minValue) / (maxValue - minValue) * (sliderWidth - handleWidth);
+      handle.style.left = handlePosition + 'px';
+
+      updateValueDisplay();
+    }
+
+    handle.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+      updateSlider(e.clientX - slider.getBoundingClientRect().left);
+    }
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+
+    updateSlider((currentValue - minValue) / (maxValue - minValue) * (slider.offsetWidth - handle.offsetWidth));
+  </script>
+</body>
+</html>
