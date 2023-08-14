@@ -49,7 +49,6 @@
       const sliderWidth = slider.offsetWidth;
       const handleWidth = handle.offsetWidth;
 
-      // Вычисляем новое значение
       const newValue = Math.round((positionX - (handleWidth / 2)) / (sliderWidth - handleWidth) * (maxValue - minValue) + minValue);
 
       currentValue = Math.min(maxValue, Math.max(minValue, newValue));
